@@ -416,16 +416,25 @@ footer p{font-size:12.5px;color:var(--text-2);font-family:var(--font-mono);}
 }
 @media (max-width:760px){
   .nav-links{
-    position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;
-    background:var(--bg-0); flex-direction:column; align-items:stretch; gap:0;
+    position:fixed;top:var(--nav-h);left:0;right:0;
+    height:calc(100vh - var(--nav-h));
+    height:calc(100dvh - var(--nav-h));
+    background:var(--bg-1);
+    backdrop-filter:blur(20px) saturate(140%);
+    -webkit-backdrop-filter:blur(20px) saturate(140%);
+    flex-direction:column; align-items:stretch; gap:0;
     padding:16px; transform:translateX(100%); transition:transform .35s ease;
     border-top:1px solid var(--border);
+    overflow-y:auto;
+    box-shadow:-16px 0 50px rgba(0,0,0,0.45);
+    z-index:99;
   }
   .nav-links.open{transform:translateX(0);}
   .nav-links a{padding:16px;font-size:14px;border-bottom:1px solid var(--border);}
   .hamburger{display:flex;}
   .hero-actions .btn{flex:1;justify-content:center;}
   .hero-stats{flex-wrap:wrap;gap:22px;}
+  body.nav-open{overflow:hidden;}
 }
 @media (max-width:600px){
   .section{padding:80px 0;}
@@ -867,9 +876,14 @@ footer p{font-size:12.5px;color:var(--text-2);font-family:var(--font-mono);}
   hamburger.addEventListener('click', function(){
     const isOpen = navLinks.classList.toggle('open');
     hamburger.setAttribute('aria-expanded', isOpen);
+    document.body.classList.toggle('nav-open', isOpen);
   });
   navLinks.querySelectorAll('a').forEach(function(a){
-    a.addEventListener('click', function(){ navLinks.classList.remove('open'); });
+    a.addEventListener('click', function(){
+      navLinks.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+    });
   });
 
   /* ---------- active section highlighting ---------- */
@@ -977,7 +991,7 @@ footer p{font-size:12.5px;color:var(--text-2);font-family:var(--font-mono);}
     { t:'raw', text:'  "role": "Backend Engineer / Full Stack Developer",' },
     { t:'raw', text:'  "university": "Sukkur IBA University",' },
     { t:'raw', text:'  "focus": [' },
-    { t:'raw', text:'    "FastAPI", "Spring Boot", "React", Node.js' },
+    { t:'raw', text:'    "FastAPI", "Spring Boot", "React", "Node.js",' },
     { t:'raw', text:'    "PostgreSQL", "Docker", "AWS"' },
     { t:'raw', text:'  ],' },
     { t:'raw', text:'  "status": "open_to_work",' },
